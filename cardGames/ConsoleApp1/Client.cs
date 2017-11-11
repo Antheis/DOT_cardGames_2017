@@ -13,11 +13,13 @@ namespace cardGame_Server
         private Connection Connect { get; set; }
         private string Name { get; set; }
         private int Id { get; set; }
+        private bool Ready { get; set; }
    
         public Client(Connection connection)
         {
             Connect = connection;
             Name = Connect.ToString();
+            Ready = false;
         }
 
         public void AddCard(Card card)
@@ -33,6 +35,21 @@ namespace cardGame_Server
         public void Write(string msg)
         {
             //Connect.SendObject(msg);
+        }
+
+        public void switchReadyState()
+        {
+            Ready = !Ready;
+        }
+
+        public bool IsEqual(Connection connection)
+        {
+            return Connect == connection;
+        }
+
+        public bool IsReady()
+        {
+            return Ready;
         }
     }
 }

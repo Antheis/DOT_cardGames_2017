@@ -21,22 +21,24 @@ namespace cardGame_Server
         private List<DataProcessor> dataProcessors { get; set; }
         private Dictionary<string, string> dataProcessorOptions { get; set; }
 
-        private int nbGames = 0;
-        private int nbClients = 0;
         private List<Game> games = new List<Game>();
+        private List<Client> players = new List<Client>();
 
-        private void AddConnection(Connection connection)
+        private void AddToGame(Connection connection)
         {
-            foreach (Game game in games)
+            lock (games)
             {
-                if (!game.IsFull())
+                foreach (Game game in games)
                 {
-                    game.AddClient(connection);
-                    return;
+                    if (!game.IsFull())
+                    {
+                        game.AddClient(connection);
+                        return;
+                    }
                 }
+                games.Add(new Game(games.Count));
+                games[games.Count - 1].AddClient(connection);
             }
-            games.Add(new Game(games.Count));
-            games[games.Count - 1].AddClient(connection);
         }
 
         public Server()
@@ -61,10 +63,17 @@ namespace cardGame_Server
             foreach (IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.TCP))
                 Console.WriteLine("{0}:{1}", localEndPoint.Address, localEndPoint.Port);
 
-            Console.WriteLine("\nPress a key to quit.");
-            Console.ReadKey(true);
-
-            NetworkComms.Shutdown();
+            Console.WriteLine("\nWaiting for games to ba launched...");
+            while (true)
+            {
+                foreach (Game game in games)
+                {
+                    if (game.IsFull() && !game.IsRunning())
+                        game.BeginGame();
+                    if (game.IsRunning())
+                        game.PrepareTurn();
+                }
+            }
         }
 
         private void OnConnectionClosed(Connection connection)
@@ -75,7 +84,11 @@ namespace cardGame_Server
         private void OnConnectionEstablished(Connection connection)
         {
             Console.WriteLine("Connection established with " + connection.ToString());
-            AddConnection(connection);
+            lock (players)
+            {
+                players.Add(new Client(connection));
+            }
+            AddToGame(connection);
             //connection.SendObject("Card", Card.Two);
         }
 

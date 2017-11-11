@@ -12,15 +12,18 @@ namespace cardGame_Server
     class Game
     {
         private static int NbCard = 52;
-
-        private List<Client> players = new List<Client>();
         private int maxNbPlayers = 2;
         private int nbTurn { get; set; }
+
+        private List<Client> players = new List<Client>();
         private List<Card> deck = new List<Card>();
+
         private int Number { get; set; }
+        private bool Running { get; set; }
 
         public Game(int nb)
         {
+            Running = false;
             Number = nb;
             for (int i = 0; i < NbCard; ++i)
             {
@@ -43,28 +46,46 @@ namespace cardGame_Server
             }
         }
 
-        private void BeginGame()
+        public void BeginGame()
         {
+            if (Running)
+                return;
+            Running = true;
+            foreach (Client client in players)
+            {
+                //client.Write("The party will begin");
+            }
             DistribCards();
         }
 
         public void AddClient(Connection connection)
         {
             players.Add(new Client(connection));
-            //connection.SendObject("Added to game n°" + nb);
-            if (IsFull())
-            {
-                foreach (Client client in players)
-                {
-                    //client.Write("The party will begin");
-                }
-                BeginGame();
-            }
+            //connection.SendObject("Added to game n°" + nb + ". Waiting for a challenger.");
         }
 
         public bool IsFull()
         {
             return players.Count == maxNbPlayers;
+        }
+
+        public int nbPlayers()
+        {
+            return players.Count;
+        }
+
+        public bool IsRunning()
+        {
+            return Running;
+        }
+
+        public void PrepareTurn()
+        {
+            foreach (Client client in players)
+            {
+                if (!client.IsReady())
+                    return;
+            }
         }
     }
 }
