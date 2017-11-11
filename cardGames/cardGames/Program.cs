@@ -16,6 +16,13 @@ namespace cardGame_Client
     {
         static void Main(string[] args)
         {
+            Client client = new Client();
+            client.start();
+        }
+
+
+        /*static void Main(string[] args)
+        {
             DataSerializer dataSerializer = DPSManager.GetDataSerializer<BinaryFormaterSerializer>();
             List<DataProcessor> dataProcessors = new List<DataProcessor>();
             Dictionary<string, string> dataProcessorOptions = new Dictionary<string, string>();
@@ -42,6 +49,6 @@ namespace cardGame_Client
                 );
             }
             return new IPEndPoint(addresses[0], port);
-        }
+        }*/
     }
 }
