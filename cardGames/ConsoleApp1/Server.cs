@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Net;
+using System.Threading;
 using NetworkCommsDotNet;
 using NetworkCommsDotNet.DPSBase;
 using NetworkCommsDotNet.Connections;
@@ -24,13 +25,18 @@ namespace cardGame_Server
         private int nbClients = 0;
         private List<Game> games = new List<Game>();
 
-        private void addConnection(Connection connection)
+        private void AddConnection(Connection connection)
         {
             foreach (Game game in games)
             {
-
+                if (!game.IsFull())
+                {
+                    game.AddClient(connection);
+                    return;
+                }
             }
-            games.Add(new Game());
+            games.Add(new Game(games.Count));
+            games[games.Count - 1].AddClient(connection);
         }
 
         public Server()
@@ -69,7 +75,7 @@ namespace cardGame_Server
         private void OnConnectionEstablished(Connection connection)
         {
             Console.WriteLine("Connection established with " + connection.ToString());
-            addConnection(connection);
+            AddConnection(connection);
             //connection.SendObject("Card", Card.Two);
         }
 

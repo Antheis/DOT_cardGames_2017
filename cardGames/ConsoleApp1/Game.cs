@@ -17,25 +17,54 @@ namespace cardGame_Server
         private int maxNbPlayers = 2;
         private int nbTurn { get; set; }
         private List<Card> deck = new List<Card>();
+        private int Number { get; set; }
 
-        public Game()
+        public Game(int nb)
         {
+            Number = nb;
             for (int i = 0; i < NbCard; ++i)
             {
-                deck.Insert(0, (Card)Math.Floor((decimal)i/4));
+                deck.Add((Card)Math.Floor((decimal)i/4));
             }
         }
 
-        public void distribCards()
+        private void DistribCards()
         {
-            
+            foreach (Client client in players)
+            {
+                //client.Write("Distributing the cards");
+            }
+            Random rand = new Random();
+            while (deck.Count != 0)
+            {
+                int nbCard = rand.Next(deck.Count);
+                players[deck.Count%maxNbPlayers].AddCard(deck[nbCard]);
+                deck.RemoveAt(nbCard);
+            }
         }
 
-        public void addClient(Connection connection)
+        private void BeginGame()
         {
-            
+            DistribCards();
         }
 
-        public void isEmpty
+        public void AddClient(Connection connection)
+        {
+            players.Add(new Client(connection));
+            //connection.SendObject("Added to game n°" + nb);
+            if (IsFull())
+            {
+                foreach (Client client in players)
+                {
+                    //client.Write("The party will begin");
+                }
+                BeginGame();
+            }
+        }
+
+        public bool IsFull()
+        {
+            return players.Count == maxNbPlayers;
+        }
     }
 }
