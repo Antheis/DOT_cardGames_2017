@@ -1,0 +1,17 @@
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\ClientTests.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\ClientTests.pdb
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Client.exe
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\NetworkCommsDotNet.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Client.pdb
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Client.exe.config
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\obj\Debug\ClientTests.csprojResolveAssemblyReference.cache
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\obj\Debug\ClientTests.csproj.CoreCompileInputs.cache
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\obj\Debug\ClientTests.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ClientTests\obj\Debug\ClientTests.pdb

@@ -1,20 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using NetworkCommsDotNet;
+using NetworkCommsDotNet.Connections.TCP;
+using NetworkCommsDotNet.DPSBase;
 
-namespace cardGames
+namespace cardGame_Client
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Please enter the server IP and port in the format IP:Port");
-            string src = Console.ReadLine();
+            DataSerializer dataSerializer = DPSManager.GetDataSerializer<BinaryFormaterSerializer>();
+            List<DataProcessor> dataProcessors = new List<DataProcessor>();
+            Dictionary<string, string> dataProcessorOptions = new Dictionary<string, string>();
 
-            string  IP = src.Split(':').First();
-            int     Port = int.Parse(src.Split(':').Last());
+            NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
+
+            var slaveId = Process.GetCurrentProcess().Id;
+            var endpoint = GetIPEndPointFromHostName("localhost", 4242);
+            var connection = TCPConnection.GetConnection(new ConnectionInfo(endpoint));
+            var slaveName = string.Format("Slave{0}", slaveId);
+
+            connection.SendObject("Message", string.Format("{0} reporting for duty!", slaveName));
+            
+        }
+
+        private static IPEndPoint GetIPEndPointFromHostName(string hostName, int port)
+        {
+            var addresses = Dns.GetHostAddresses(hostName);
+            if (addresses.Length == 0)
+            {
+                throw new ArgumentException(
+                    "Unable to retrieve address from specified host name.",
+                    "hostName"
+                );
+            }
+            return new IPEndPoint(addresses[0], port);
         }
     }
 }

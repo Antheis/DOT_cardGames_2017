@@ -1,0 +1,8 @@
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\bin\Debug\Client.exe.config
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\bin\Debug\Client.exe
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\bin\Debug\Client.pdb
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\bin\Debug\NetworkCommsDotNet.dll
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\obj\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\obj\Debug\Client.csproj.CoreCompileInputs.cache
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\obj\Debug\Client.exe
+C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\cardGames\obj\Debug\Client.pdb
