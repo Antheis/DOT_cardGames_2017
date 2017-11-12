@@ -64,6 +64,11 @@ namespace cardGame_Server
             return CardDrawn;
         }
 
+        public List<Cards> GetHand()
+        {
+            return hand;
+        }
+
         public void Write(string msg)
         {
             Connect.SendObject("Message", msg);
@@ -72,7 +77,7 @@ namespace cardGame_Server
         public void SendCmd(Cmd command, List<Cards> list = null)
         {
             ProtocolCl cmd = new ProtocolCl(command, list);
-            Connect.SendObject("Protocol", cmd);
+            Connect.SendObject("SendProtocol", cmd);
         }
 
         public void TossHand()

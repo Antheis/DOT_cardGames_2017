@@ -12,7 +12,6 @@ namespace cardGame_Server
     class Game
     {
         private static int maxNbPlayers = 2;
-        private int nbTurn { get; set; }
         private Deck deck { get; set; }
         private List<Client> players = new List<Client>();
         private List<Cards> well = new List<Cards>();
@@ -31,6 +30,7 @@ namespace cardGame_Server
 
         private void DistribCards()
         {
+            Console.WriteLine("Distributing the cards");
             Random rand = new Random();
             int idx = 0;
             Cards card;
@@ -43,6 +43,7 @@ namespace cardGame_Server
 
         public void BeginGame()
         {
+            Console.WriteLine("The game is begining");
             if (Running)
                 return;
             Running = true;
@@ -89,7 +90,6 @@ namespace cardGame_Server
             deck = new Deck();
             Running = false;
             Playing = false;
-            nbTurn = 0;
             Console.WriteLine("Game reset");
         }
 
@@ -131,40 +131,45 @@ namespace cardGame_Server
 
         public void DoTurn()
         {
-            nbTurn++;
-            msgTurn();
             foreach (Client client in players)
             {
                 if (!client.IsReady())
                     return;
             }
+            Console.WriteLine("Doing turn");
             PrepareTurn();
+            foreach (Client client in players)
+            {
+                client.setReadyState(false);
+            }
         }
 
         public void PrepareTurn()
         {
-            FillWell(false);
+            if (FillWell())
+                return;
             CheckWinTurnCondition();
         }
 
-        public void FillWell(bool display)
+        public bool FillWell()
         {
+            Console.WriteLine("Fill well");
             foreach (Client client in players)
             {
-                if (display)
-                    client.Write("Draw! So we take another card.");
                 Cards card = client.RemoveCard();
                 if (card == Cards.None)
                 {
                     CheckWinGameCondition();
-                    return;
+                    return true;
                 }
                 well.Add(card);
             }
+            return false;
         }
 
         public void CheckWinTurnCondition()
         {
+            Console.WriteLine("Check win turn");
             Cards higher = Cards.None;
             List<int> winners = new List<int>();
             for (int i = well.Count - maxNbPlayers; i < well.Count - 1; ++i)
@@ -185,23 +190,34 @@ namespace cardGame_Server
                 }
             }
             if (winners.Count > 1)
-                FillWell(true);
-            else
             {
-                DisplayVictoryMsg(players[winners[0]]);
-                CheckWinGameCondition();
+                FillWell();
+                foreach (int i in winners)
+                {
+                    players[winners[i]].SendCmd(Cmd.Draw);
+                }
+            }
+            else
+                DisplayVictory(players[winners[0]]);
+            foreach (Client client in players)
+            {
+                if (client.NbCards() == 0)
+                {
+                    ResetGame(false);
+                    break;
+                }
             }
         }
 
         public void CheckWinGameCondition()
         {
+            Console.WriteLine("Check win game");
             foreach (Client cl in players)
             {
                 if (cl.NbCards() == 0)
-                    cl.Write("You lost.");
+                    cl.SendCmd(Cmd.Lose);
                 else
-                    cl.Write("You won!");
-                cl.Write("Restart? (y/N)");
+                    cl.SendCmd(Cmd.Win);
             }
             ResetGame(false);
         }
@@ -211,29 +227,21 @@ namespace cardGame_Server
             ResetGame(false);
         }
 
-        public void msgTurn()
+        public void DisplayVictory(Client winner)
         {
             foreach (Client cl in players)
             {
-                cl.Write("Turn n°" + nbTurn + ": You have " + cl.NbCards() + ".\nPlease take your card:");
-            }
-        }
-
-        public void DisplayVictoryMsg(Client winner)
-        {
-            foreach (Client cl in players)
-            {
-                if (winner == cl)
+                if (cl == winner)
                 {
-                    cl.Write("You win this turn! You take the card in the well.");
                     while (well.Count != 0)
                     {
-                        cl.AddCard(well[0]);
+                        winner.AddCard(well[0]);
                         well.RemoveAt(0);
                     }
+                    cl.SendCmd(Cmd.Win);
                 }
                 else
-                    cl.Write("You lose this turn.");
+                    cl.SendCmd(Cmd.Lose);
             }
         }
     }

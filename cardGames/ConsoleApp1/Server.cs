@@ -65,7 +65,7 @@ namespace cardGame_Server
         {
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
 
-            NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
+            NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("ReceiveProtocol", PrintIncomingMessage);
             NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
             NetworkComms.AppendGlobalConnectionEstablishHandler(OnConnectionEstablished);
             NetworkComms.AppendGlobalConnectionCloseHandler(OnConnectionClosed);
@@ -133,11 +133,37 @@ namespace cardGame_Server
             switch (message.Command)
             {
                 case (Cmd.Ready):
+                    Console.WriteLine("Ready cmd received");
                     foreach (Client cl in players)
                     {
                         if (cl.IsEqual(connection))
                         {
                             cl.setReadyState(true);
+                            Console.WriteLine(cl.IsReady().ToString());
+                            break;
+                        }
+                    }
+                    break;
+                case (Cmd.Turn):
+                    Console.WriteLine("Turn cmd received");
+                    foreach (Client cl in players)
+                    {
+                        if (cl.IsEqual(connection))
+                        {
+                            cl.setReadyState(true);
+                            Console.WriteLine(cl.IsReady().ToString());
+                            break;
+                        }
+                    }
+                    break;
+                case (Cmd.Hand):
+                    Console.WriteLine("Hand cmd received");
+                    foreach (Client cl in players)
+                    {
+                        if (cl.IsEqual(connection))
+                        {
+                            cl.SendCmd(Cmd.Hand, cl.GetHand());
+                            Console.WriteLine(cl.GetHand().ToString());
                             break;
                         }
                     }
