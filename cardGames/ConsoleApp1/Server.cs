@@ -81,14 +81,20 @@ namespace cardGame_Server
             {
                 lock (games)
                 {
-                    foreach (Game game in games)
+                    for (int i = 0; i < games.Count; ++i)
                     {
-                        if (game.IsFull() && !game.IsRunning())
-                            game.BeginGame();
-                        if (game.IsRunning() && !game.IsPlaying())
-                            game.PrepareGame();
-                        if (game.IsPlaying())
-                            game.DoTurn();
+                        if (games[i].nbPlayers() == 0)
+                        {
+                            games.RemoveAt(i);
+                            i--;
+                            continue;
+                        }
+                        if (games[i].IsFull() && !games[i].IsRunning())
+                            games[i].BeginGame();
+                        if (games[i].IsRunning() && !games[i].IsPlaying())
+                            games[i].PrepareGame();
+                        if (games[i].IsPlaying())
+                            games[i].DoTurn();
                     }
                 }
             }
