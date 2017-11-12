@@ -23,7 +23,7 @@ namespace cardGame_Client
         private string IP;
         private int Port;
         private string ID;
-        private List<string> Bataille_available_actions = new List<string>(new string[] { "1 -'hand' to get your hand", "2 - " });
+        private List<string> Bataille_available_actions = new List<string>(new string[] { "1 -'hand' to get your hand", "2 -'Rdy' to launch a new turn",  });
         private List<string> BJ_available_actions = new List<string>(new string[] { });
         private List<string> menu_available_actions = new List<string>(new string[] { "1 -'BJ' to play blackjack", "2 -'BT' to play bataille", "3 -'help' to get available commands", "4 -'quit' to close the client" });
         private enum Status { BlackJack, Bataille, Menu };
@@ -31,7 +31,7 @@ namespace cardGame_Client
 
         public Client()
         {
-            /*string src;
+            string src;
 
             Console.WriteLine("Please enter the server IP and port in the format IP:Port");
             src = Console.ReadLine();
@@ -44,7 +44,7 @@ namespace cardGame_Client
 
             dataSerializer = DPSManager.GetDataSerializer<ProtobufSerializer>();
             dataProcessors = new List<DataProcessor>();
-            dataProcessorOptions = new Dictionary<string, string>();*/
+            dataProcessorOptions = new Dictionary<string, string>();
         }
 
         private void printhelp(Status src)
@@ -94,6 +94,10 @@ namespace cardGame_Client
                             NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Hand, Cards.None));
                             dcmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000);
                             break;
+                        case "rdy":
+
+                            break;
+
                     }
                 }
             }
@@ -111,11 +115,11 @@ namespace cardGame_Client
 
         public void start()
         {
-            /*TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
+            TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
             NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
             NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
-            TCPconn.AppendShutdownHandler(disconnect);*/
+            TCPconn.AppendShutdownHandler(disconnect);
 
             Console.WriteLine("Write 'quit' to quit | Write 'help' to get available commands");
             while (true)

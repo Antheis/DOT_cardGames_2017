@@ -16,6 +16,10 @@ namespace Protocol
         BJ = 0xff02,
         Bataille = 0xff03,
         Hand = 0xff04,
+        Turn = 0xff05,
+        Win = 0xff06,
+        Lose = 0xff07,
+        Draw = 0xff08,
         //DrawCard,
     }
 
