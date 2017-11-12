@@ -11,7 +11,7 @@ using NetworkCommsDotNet.DPSBase;
 using NetworkCommsDotNet.Connections;
 using NetworkCommsDotNet.Tools;
 using NetworkCommsDotNet.Connections.TCP;
-
+using Protocol;
 
 namespace cardGame_Client
 {
@@ -37,7 +37,7 @@ namespace cardGame_Client
             ID = Console.ReadLine();
             ID += ":" + Process.GetCurrentProcess().Id;
 
-            dataSerializer = DPSManager.GetDataSerializer<BinaryFormaterSerializer>();
+            dataSerializer = DPSManager.GetDataSerializer<ProtobufSerializer>();
             dataProcessors = new List<DataProcessor>();
             dataProcessorOptions = new Dictionary<string, string>();
         }
@@ -48,6 +48,17 @@ namespace cardGame_Client
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
             //NetworkComms.AppendGlobalIncomingPacketHandler<byte[]>("ArrayByte", todo);
             NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
+            NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
+
+            Console.WriteLine("Write 'quit' to quit");
+            while (true)
+            {
+                string line = Console.ReadLine();
+                if (line == "quit")
+                    break;
+                ProtocolCl cmd = new ProtocolCl(Cmd.Ready, Card.None);
+                TCPconn.SendObject("Protocol", cmd);
+            }
 
             TCPconn.AppendShutdownHandler(disconnect);
         }
@@ -55,6 +66,11 @@ namespace cardGame_Client
         private static void PrintIncomingMessage(PacketHeader header, Connection connection, string message)
         {
             Console.WriteLine(message);
+        }
+
+        private static void PrintIncomingMessage(PacketHeader header, Connection connection, ProtocolCl message)
+        {
+            Console.WriteLine("Cmd = " + message.Command);
         }
 
         private void disconnect(Connection conn)

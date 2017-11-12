@@ -1,0 +1,11 @@
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\bin\Debug\Protocol.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\bin\Debug\Protocol.pdb
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\obj\Debug\Protocol.csprojResolveAssemblyReference.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\obj\Debug\Protocol.csproj.CoreCompileInputs.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\obj\Debug\Protocol.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\obj\Debug\Protocol.pdb
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\bin\Debug\Protocol.dll.config
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\bin\Debug\protobuf-net.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\bin\Debug\ProtobufSerializer.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\bin\Debug\NetworkCommsDotNet.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\Protocol\bin\Debug\protobuf-net.xml

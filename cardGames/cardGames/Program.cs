@@ -18,8 +18,6 @@ namespace cardGame_Client
         {
             Client client = new Client();
             client.start();
-            Console.WriteLine("Press a key to quit");
-            Console.ReadKey(true);
         }
 
 

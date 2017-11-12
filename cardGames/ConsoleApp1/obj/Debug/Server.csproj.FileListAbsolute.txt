@@ -14,3 +14,9 @@ C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Deb
 C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Debug\Server.csproj.CoreCompileInputs.cache
 C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Debug\Server.exe
 C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Debug\Server.pdb
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\Protocol.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\Protocol.pdb
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\ProtobufSerializer.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\protobuf-net.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\Protocol.dll.config
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\protobuf-net.xml

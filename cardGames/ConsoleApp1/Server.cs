@@ -44,7 +44,7 @@ namespace cardGame_Server
                     }
                 }
                 Console.WriteLine("Creating new Game");
-                games.Add(new Game(games.Count - 1));
+                games.Add(new Game(games.Count));
                 cl.setGame(games.Count - 1);
                 games[games.Count - 1].AddClient(cl);
                 lock (players)
@@ -56,7 +56,7 @@ namespace cardGame_Server
 
         public Server()
         {
-            dataSerializer = DPSManager.GetDataSerializer<BinaryFormaterSerializer>();
+            dataSerializer = DPSManager.GetDataSerializer<ProtobufSerializer>();
             dataProcessors = new List<DataProcessor>();
             dataProcessorOptions = new Dictionary<string, string>();
         }
@@ -65,7 +65,7 @@ namespace cardGame_Server
         {
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
 
-            NetworkComms.AppendGlobalIncomingPacketHandler<Protocol.Protocol>("ArrayByte", PrintIncomingMessage);
+            NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
             NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
             NetworkComms.AppendGlobalConnectionEstablishHandler(OnConnectionEstablished);
             NetworkComms.AppendGlobalConnectionCloseHandler(OnConnectionClosed);
@@ -126,7 +126,7 @@ namespace cardGame_Server
             AddToGame(cl);
         }
 
-        private static void PrintIncomingMessage(PacketHeader header, Connection connection, Protocol.Protocol message)
+        private static void PrintIncomingMessage(PacketHeader header, Connection connection, ProtocolCl message)
         {
             Console.WriteLine("\nReceived protocol from " + connection.ToString());
             Console.WriteLine("Command - " + message.Command);

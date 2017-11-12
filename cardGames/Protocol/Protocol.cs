@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProtoBuf;
 
 namespace Protocol
 {
@@ -16,13 +17,18 @@ namespace Protocol
 
     public enum Card { None=-1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
 
-    [Serializable]
-    public class Protocol
+    [ProtoContract]
+    public class ProtocolCl
     {
-        public Cmd Command { get; set; }
-        public Card CardSend { get; set; }
+        [ProtoMember(1)]
+        public Cmd Command { get; private set; }
 
-        public Protocol(Cmd cmd, Card card)
+        [ProtoMember(2)]
+        public Card CardSend { get; private set; }
+
+        protected ProtocolCl() { }
+
+        public ProtocolCl(Cmd cmd, Card card)
         {
             Command = cmd;
             CardSend = card;
