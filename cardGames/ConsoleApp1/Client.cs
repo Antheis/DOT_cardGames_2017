@@ -69,6 +69,12 @@ namespace cardGame_Server
             Connect.SendObject("Message", msg);
         }
 
+        public void SendCmd(Cmd command, List<Cards> list = null)
+        {
+            ProtocolCl cmd = new ProtocolCl(command, list);
+            Connect.SendObject("Protocol", cmd);
+        }
+
         public void TossHand()
         {
             hand.RemoveRange(0, hand.Count);

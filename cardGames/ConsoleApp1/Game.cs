@@ -120,6 +120,11 @@ namespace cardGame_Server
                 if (!client.IsReady())
                     return;
             }
+            foreach (Client client in players)
+            {
+                client.SendCmd(Cmd.Ready);
+                client.setReadyState(false);
+            }
             Playing = true;
             Console.WriteLine("Game prepared.");
         }
@@ -130,7 +135,7 @@ namespace cardGame_Server
             msgTurn();
             foreach (Client client in players)
             {
-                if (client.GetCardDrawn() == Cards.None)
+                if (!client.IsReady())
                     return;
             }
             PrepareTurn();

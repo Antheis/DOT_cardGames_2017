@@ -104,14 +104,14 @@ namespace cardGame_Server
                     if (cl.IsEqual(connection))
                     {
                         if (cl.Game() != -1)
-                        lock (games)
-                        {
-                            if (games[cl.Game()].RemoveClient(connection) && games[cl.Game()].nbPlayers() == 0)
+                            lock (games)
                             {
-                                games.RemoveAt(cl.Game());
-                                break;
+                                if (games[cl.Game()].RemoveClient(connection) && games[cl.Game()].nbPlayers() == 0)
+                                {
+                                    games.RemoveAt(cl.Game());
+                                    break;
+                                }
                             }
-                        }
                         players.Remove(cl);
                         break;
                     }
@@ -126,19 +126,28 @@ namespace cardGame_Server
             AddToGame(cl);
         }
 
-        private static void PrintIncomingMessage(PacketHeader header, Connection connection, ProtocolCl message)
+        private void PrintIncomingMessage(PacketHeader header, Connection connection, ProtocolCl message)
         {
             Console.WriteLine("\nReceived protocol from " + connection.ToString());
             Console.WriteLine("Command - " + message.Command);
             switch (message.Command)
             {
-                //Cmd handling
+                case (Cmd.Ready):
+                    foreach (Client cl in players)
+                    {
+                        if (cl.IsEqual(connection))
+                        {
+                            cl.setReadyState(true);
+                            break;
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
         }
 
-        private static void PrintIncomingMessage(PacketHeader header, Connection connection, string message)
+        private void PrintIncomingMessage(PacketHeader header, Connection connection, string message)
         {
             Console.WriteLine("\nReceived string from " + connection.ToString());
             Console.WriteLine(message);
