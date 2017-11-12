@@ -12,7 +12,10 @@ namespace Protocol
     public enum Cmd
     {
         Ready=0xff00,
-        DrawCard,
+        Games_list = 0xff01,
+        BJ = 0xff02,
+        Bataille = 0xff03,
+        //DrawCard,
     }
 
     public enum Card { None=-1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };

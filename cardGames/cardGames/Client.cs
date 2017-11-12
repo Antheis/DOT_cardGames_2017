@@ -23,6 +23,9 @@ namespace cardGame_Client
         private string  IP;
         private int     Port;
         private string  ID;
+        //private List<string> Bataille_available_actions = new List<string>(new string[] { });
+        //private List<string> BJ_available_actions = new List<string>(new string[] { });
+        private List<string> menu_available_actions = new List<string>(new string[] { "'BJ' to play blackjack", "'Bataille' to play bataille", "'help' to get available commands", "'qui' to close the client" });
 
         public Client()
         {
@@ -46,7 +49,6 @@ namespace cardGame_Client
         {
             Connection TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
-            //NetworkComms.AppendGlobalIncomingPacketHandler<byte[]>("ArrayByte", todo);
             NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
             NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
 
