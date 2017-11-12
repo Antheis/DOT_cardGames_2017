@@ -23,7 +23,7 @@ namespace cardGame_Client
         private string IP;
         private int Port;
         private string ID;
-        private List<string> Bataille_available_actions = new List<string>(new string[] { "1 -'hand' to get your hand", "2 -'Rdy' to launch a new turn",  });
+        private List<string> Bataille_available_actions = new List<string>(new string[] { "1 -'hand' to get your hand", "2 -'Rdy' to launch a new turn"});
         private List<string> BJ_available_actions = new List<string>(new string[] { });
         private List<string> menu_available_actions = new List<string>(new string[] { "1 -'BJ' to play blackjack", "2 -'BT' to play bataille", "3 -'help' to get available commands", "4 -'quit' to close the client" });
         private enum Status { BlackJack, Bataille, Menu };
@@ -40,7 +40,6 @@ namespace cardGame_Client
 
             Console.WriteLine("Please give me your ID");
             ID = Console.ReadLine();
-            ID += ":" + Process.GetCurrentProcess().Id;
 
             dataSerializer = DPSManager.GetDataSerializer<ProtobufSerializer>();
             dataProcessors = new List<DataProcessor>();
@@ -66,14 +65,40 @@ namespace cardGame_Client
             }
         }
 
-        void Print_turn_result(Status status, ProtocolCl scmd)
+        private void Print_turn_result(Status status, ProtocolCl scmd)
         {
             if (status == Status.Bataille)
             {
-
+                switch (scmd.Command)
+                {
+                    case Cmd.Win:
+                        Console.WriteLine("You won this turn. Your card was" + scmd.CardSend[0].ToString() + "Your oponent's card was" + scmd.CardSend[1].ToString());
+                        break;
+                    case Cmd.Lose:
+                        Console.WriteLine("You lost this turn. Your card was" + scmd.CardSend[0].ToString() + "Your oponent's card was" + scmd.CardSend[1].ToString());
+                        break;
+                    case Cmd.Draw:
+                        Console.WriteLine("This turn was a draw.");
+                        break;
+                }
             }
             else
             {
+                Console.WriteLine("Implelent BlackJack");
+            }
+        }
+
+        private void print_hand(Status status, ProtocolCl scmd)
+        {
+            switch (status)
+            {
+                case Status.Bataille:
+                    Console.WriteLine("Here is your hand !:");
+                    foreach(Cards t in scmd.CardSend) { Console.Write(t.ToString() + " | "); }
+                    break;
+                case Status.BlackJack:
+
+                    break;
 
             }
         }
@@ -86,24 +111,31 @@ namespace cardGame_Client
                 int pile = 0;
 
                 ProtocolCl srv_cmd;
+<<<<<<< HEAD
                 NetworkComms.SendObject("ReceiveProtocol", IP, Port, new ProtocolCl(Cmd.Ready));
                 Console.WriteLine("Waiting for ready players to launch the game !");
                 srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("ReceiveProtocol", "SendProtocol", 30000);
+=======
+                NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Ready));
+                Console.WriteLine("Waiting for ready players to launch the game !");
+                srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 300000);
+>>>>>>> c61556cd7438fb52a4b41f61e5bdcdf13818fc86
                 if (srv_cmd.Command != Cmd.Ready)
                 {
-                    Console.WriteLine("Your game is not ready, it got destroyed...");
+                    Console.WriteLine("Something wrong hapened, your game got destroyed.");
                     return;
                 }
                 Console.WriteLine("Write 'help' to get available commands");
-                while (handnbr > 0)
+                while (handnbr > 0 && handnbr < 52)
                 {
-                    string line = Console.ReadLine();
+                    string line = Console.ReadLine().ToLower();
                     switch (line)
                     {
                         case "help":
                             printhelp(Status.Bataille);
                             break;
                         case "hand":
+<<<<<<< HEAD
                             NetworkComms.SendObject("ReceiveProtocol", IP, Port, new ProtocolCl(Cmd.Hand));
                             srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("ReceiveProtocol", "SendProtocol", 30000);
                             break;
@@ -112,18 +144,35 @@ namespace cardGame_Client
                             handnbr--;
                             pile += 2;
                             Print_turn_result(Status.Bataille, srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("ReceiveProtocol", "SendProtocol", 30000));
+=======
+                            NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Hand));
+                            print_hand(Status.Bataille, TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 10000));
+                            break;
+                        case "rdy":
+                            NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Turn));
+                            handnbr--;
+                            pile += 2;
+                            Print_turn_result(Status.Bataille, srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 10000));
+>>>>>>> c61556cd7438fb52a4b41f61e5bdcdf13818fc86
                             if (srv_cmd.Command == Cmd.Win)
                             {
                                 handnbr += pile;
                                 pile = 0;
                             }
+                            Console.WriteLine("Your have now " + handnbr + "cards in your hand !");
                             break;
                     }
                 }
+                if (handnbr == 0)
+                    Console.WriteLine("You lost this game, try again !");
+                else
+                    Console.WriteLine("You won, congratz !");
+
             }
             catch (ExpectedReturnTimeoutException)
             {
-
+                Console.WriteLine("Your game is not ready, it got destroyed...");
+                return;
             }
         }
 
@@ -137,14 +186,12 @@ namespace cardGame_Client
         {
             TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
-            //NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
-            //NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
             TCPconn.AppendShutdownHandler(disconnect);
 
             Console.WriteLine("Write 'quit' to quit | Write 'help' to get available commands");
             while (true)
             {
-                string line = Console.ReadLine();
+                string line = Console.ReadLine().ToLower();
                 if (line == "quit")
                     break;
                 switch (line)
@@ -152,32 +199,20 @@ namespace cardGame_Client
                     case "help":
                         printhelp(Status.Menu);
                         break;
-                    case "BJ":
+                    case "bj":
                         BlackJack();
                         break;
-                    case "BT":
+                    case "bt":
                         Bataille();
                         break;
                 }
-                //ProtocolCl cmd = new ProtocolCl(Cmd.Ready, Card.None);
-                //TCPconn.SendObject("Protocol", cmd);
             }
-            //TCPconn.AppendShutdownHandler(disconnect);
         }
-
-        /*private static void PrintIncomingMessage(PacketHeader header, Connection connection, string message)
-        {
-            Console.WriteLine(message);
-        }
-
-        private static void PrintIncomingMessage(PacketHeader header, Connection connection, ProtocolCl message)
-        {
-            Console.WriteLine("Cmd = " + message.Command);
-        }*/
 
         private void disconnect(Connection conn)
         {
-
+            Console.WriteLine("You got disconnected from the server");
+            Environment.Exit(42);
         }
     }
 }
