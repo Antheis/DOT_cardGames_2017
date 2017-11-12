@@ -27,14 +27,14 @@ namespace Protocol
         public Cmd Command { get; private set; }
 
         [ProtoMember(2)]
-        public Cards CardSend { get; private set; }
+        public List<Cards> CardSend { get; private set; }
 
         protected ProtocolCl() { }
 
-        public ProtocolCl(Cmd cmd, Cards card)
+        public ProtocolCl(Cmd cmd, List<Cards> cards)
         {
             Command = cmd;
-            CardSend = card;
+            CardSend = cards;
         }
     }
 }
