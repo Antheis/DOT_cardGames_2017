@@ -40,7 +40,6 @@ namespace cardGame_Client
 
             Console.WriteLine("Please give me your ID");
             ID = Console.ReadLine();
-            ID += ":" + Process.GetCurrentProcess().Id;
 
             dataSerializer = DPSManager.GetDataSerializer<ProtobufSerializer>();
             dataProcessors = new List<DataProcessor>();
@@ -66,7 +65,7 @@ namespace cardGame_Client
             }
         }
 
-        void Print_turn_result(Status status, ProtocolCl scmd)
+        private void Print_turn_result(Status status, ProtocolCl scmd)
         {
             if (status == Status.Bataille)
             {
@@ -85,6 +84,21 @@ namespace cardGame_Client
             }
             else
             {
+                Console.WriteLine("Implelent BlackJack");
+            }
+        }
+
+        private void print_hand(Status status, ProtocolCl scmd)
+        {
+            switch (status)
+            {
+                case Status.Bataille:
+                    Console.WriteLine("Here is your hand !:");
+                    foreach(Cards t in scmd.CardSend) { Console.Write(t.ToString() + " | "); }
+                    break;
+                case Status.BlackJack:
+
+                    break;
 
             }
         }
@@ -99,7 +113,7 @@ namespace cardGame_Client
                 ProtocolCl srv_cmd;
                 NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Ready));
                 Console.WriteLine("Waiting for ready players to launch the game !");
-                srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000);
+                srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 300000);
                 if (srv_cmd.Command != Cmd.Ready)
                 {
                     Console.WriteLine("Something wrong hapened, your game got destroyed.");
@@ -114,16 +128,15 @@ namespace cardGame_Client
                         case "help":
                             printhelp(Status.Bataille);
                             break;
-                        case "" +
-                        "hand":
+                        case "hand":
                             NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Hand));
-                            srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000);
+                            print_hand(Status.Bataille, TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 10000));
                             break;
                         case "rdy":
                             NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Turn));
                             handnbr--;
                             pile += 2;
-                            Print_turn_result(Status.Bataille, srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000));
+                            Print_turn_result(Status.Bataille, srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 10000));
                             if (srv_cmd.Command == Cmd.Win)
                             {
                                 handnbr += pile;

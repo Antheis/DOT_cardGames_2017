@@ -20,3 +20,17 @@ C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Deb
 C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\protobuf-net.dll
 C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\Protocol.dll.config
 C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\protobuf-net.xml
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\Server.exe.config
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\Server.exe
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\Server.pdb
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\NetworkCommsDotNet.dll
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\ProtobufSerializer.dll
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\Protocol.dll
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\protobuf-net.dll
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\Protocol.pdb
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\Protocol.dll.config
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\bin\Debug\protobuf-net.xml
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\obj\Debug\Server.exe
+C:\Users\Lawliet\Desktop\rendu\github\DOT_cardGames_2017\cardGames\ConsoleApp1\obj\Debug\Server.pdb
