@@ -31,6 +31,14 @@ namespace cardGame_Client
 
         public Client()
         {
+            dataSerializer = DPSManager.GetDataSerializer<ProtobufSerializer>();
+            dataProcessors = new List<DataProcessor>();
+            dataProcessorOptions = new Dictionary<string, string>();
+            getInfo();
+        }
+
+        public void getInfo()
+        {
             string src;
 
             Console.WriteLine("Please enter the server IP and port in the format IP:Port");
@@ -40,10 +48,6 @@ namespace cardGame_Client
 
             Console.WriteLine("Please give me your ID");
             ID = Console.ReadLine();
-
-            dataSerializer = DPSManager.GetDataSerializer<ProtobufSerializer>();
-            dataProcessors = new List<DataProcessor>();
-            dataProcessorOptions = new Dictionary<string, string>();
         }
 
         private void printhelp(Status src)
@@ -138,10 +142,8 @@ namespace cardGame_Client
                             pile += 2;
                             Print_turn_result(Status.Bataille, srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("ReceiveProtocol", "SendProtocol", 30000));
                             if (srv_cmd.Command == Cmd.Win)
-                            {
                                 handnbr += pile;
-                                pile = 0;
-                            }
+                            pile = 0;
                             Console.WriteLine("Your have now " + handnbr + "cards in your hand !");
                             break;
                     }
@@ -167,7 +169,17 @@ namespace cardGame_Client
 
         public void start()
         {
-            TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
+            try
+            {
+                TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
+            }
+            catch
+            {
+                Console.WriteLine("Invalid Connection Information.");
+                getInfo();
+                start();
+                return;
+            }
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
             TCPconn.AppendShutdownHandler(disconnect);
 

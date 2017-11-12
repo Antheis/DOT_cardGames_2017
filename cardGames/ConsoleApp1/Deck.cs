@@ -9,28 +9,27 @@ namespace cardGame_Server
 {
     class Deck
     {
-        private List<int> deck = new List<int>();
+        private List<Cards> deck = new List<Cards>();
         private int availablecards;
         private Random rnd;
 
         public Deck()
         {
             availablecards = 52;
-            for (int i = 0; i < 13; ++i)
-                deck.Add(4);
+            for (int i = 0; i < availablecards; ++i)
+                deck.Add((Cards)(i/4));
             rnd = new Random();
         }
 
         public Cards GetNextCard()
         {
-            if (deck.Count == 0)
+            if (availablecards == 0)
                 return Cards.None;
-            int dest = rnd.Next(13);
-
-            while (deck[dest] <= 0) { dest = rnd.Next(1, 13); }
-            deck[dest]--;
+            int dest = rnd.Next(availablecards);
+            Cards card = deck[dest];
+            deck.RemoveAt(dest);
             availablecards--;
-            return ((Cards)dest);
+            return card;
         }
     }
 }

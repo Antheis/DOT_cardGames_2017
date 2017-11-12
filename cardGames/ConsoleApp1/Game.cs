@@ -31,11 +31,11 @@ namespace cardGame_Server
         private void DistribCards()
         {
             Console.WriteLine("Distributing the cards");
-            Random rand = new Random();
             int idx = 0;
             Cards card;
             while ((card = deck.GetNextCard()) != Cards.None)
             {
+                Console.WriteLine(card + " goes to " + idx%maxNbPlayers);
                 players[idx % maxNbPlayers].AddCard(card);
                 ++idx;
             }
@@ -171,9 +171,10 @@ namespace cardGame_Server
         public void CheckWinTurnCondition()
         {
             Console.WriteLine("Check win turn");
-            if (players[0].GetCardDrawn() > players[0].GetCardDrawn())
+            Console.WriteLine(players[0].GetCardDrawn() + " Vs " + players[1].GetCardDrawn());
+            if (players[0].GetCardDrawn() > players[1].GetCardDrawn())
                 DisplayVictory(players[0], players[1]);
-            else if (players[0].GetCardDrawn() < players[0].GetCardDrawn())
+            else if (players[0].GetCardDrawn() < players[1].GetCardDrawn())
                 DisplayVictory(players[1], players[0]);
             else
             {
@@ -190,6 +191,7 @@ namespace cardGame_Server
 
         public void ExitGame()
         {
+            Console.WriteLine("exiting game");
             foreach (Client cl in players)
             {
                 cl.setGame(-1);
