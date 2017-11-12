@@ -27,6 +27,7 @@ namespace cardGame_Server
 
         static bool ConsoleEventCallback(int evt)
         {
+            Console.WriteLine("Closing NetworkComms...");
             NetworkComms.Shutdown();
             return false;
         }

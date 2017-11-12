@@ -47,10 +47,14 @@ namespace cardGame_Client
             Connection TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
             //NetworkComms.AppendGlobalIncomingPacketHandler<byte[]>("ArrayByte", todo);
-            //NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", todo);
+            NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
 
             TCPconn.AppendShutdownHandler(disconnect);
+        }
 
+        private static void PrintIncomingMessage(PacketHeader header, Connection connection, string message)
+        {
+            Console.WriteLine(message);
         }
 
         private void disconnect(Connection conn)

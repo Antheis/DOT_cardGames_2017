@@ -24,20 +24,32 @@ namespace cardGame_Server
         private List<Game> games = new List<Game>();
         private List<Client> players = new List<Client>();
 
-        private void AddToGame(Connection connection)
+        private void AddToGame(Client cl)
         {
             lock (games)
             {
-                foreach (Game game in games)
+                for (int i = 0; i < games.Count; ++i)
                 {
-                    if (!game.IsFull())
+                    Console.WriteLine("Checking game...");
+                    if (!games[i].IsFull())
                     {
-                        game.AddClient(connection);
+                        cl.setGame(i);
+                        games[i].AddClient(cl);
+                        lock (players)
+                        {
+                            players.Add(cl);
+                        }
                         return;
                     }
                 }
-                games.Add(new Game(games.Count));
-                games[games.Count - 1].AddClient(connection);
+                Console.WriteLine("Creating new Game");
+                games.Add(new Game(games.Count - 1));
+                cl.setGame(games.Count - 1);
+                games[games.Count - 1].AddClient(cl);
+                lock (players)
+                {
+                    players.Add(cl);
+                }
             }
         }
 
@@ -66,12 +78,15 @@ namespace cardGame_Server
             Console.WriteLine("\nWaiting for games to ba launched...");
             while (true)
             {
-                foreach (Game game in games)
+                lock (games)
                 {
-                    if (game.IsFull() && !game.IsRunning())
-                        game.BeginGame();
-                    if (game.IsRunning())
-                        game.PrepareTurn();
+                    foreach (Game game in games)
+                    {
+                        if (game.IsFull() && !game.IsRunning())
+                            game.BeginGame();
+                        if (game.IsRunning())
+                            game.PrepareTurn();
+                    }
                 }
             }
         }
@@ -79,17 +94,33 @@ namespace cardGame_Server
         private void OnConnectionClosed(Connection connection)
         {
             Console.WriteLine("Connection closed");
+            lock (players)
+            {
+                foreach (Client cl in players)
+                {
+                    if (cl.IsEqual(connection))
+                    {
+                        if (cl.Game() != -1)
+                        lock (games)
+                        {
+                            if (games[cl.Game()].RemoveClient(connection) && games[cl.Game()].nbPlayers() == 0)
+                            {
+                                games.RemoveAt(cl.Game());
+                                break;
+                            }
+                        }
+                        players.Remove(cl);
+                        break;
+                    }
+                }
+            }
         }
 
         private void OnConnectionEstablished(Connection connection)
         {
             Console.WriteLine("Connection established with " + connection.ToString());
-            lock (players)
-            {
-                players.Add(new Client(connection));
-            }
-            AddToGame(connection);
-            //connection.SendObject("Card", Card.Two);
+            Client cl = new Client(connection);
+            AddToGame(cl);
         }
 
         private static void PrintIncomingMessage(PacketHeader header, Connection connection, byte[] message)

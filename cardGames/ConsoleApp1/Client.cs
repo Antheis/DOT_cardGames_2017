@@ -14,12 +14,14 @@ namespace cardGame_Server
         private string Name { get; set; }
         private int Id { get; set; }
         private bool Ready { get; set; }
+        private int NbGameInto { get; set; }
    
         public Client(Connection connection)
         {
             Connect = connection;
             Name = Connect.ToString();
             Ready = false;
+            NbGameInto = -1;
         }
 
         public void AddCard(Card card)
@@ -32,14 +34,29 @@ namespace cardGame_Server
             return hand.Count;
         }
 
-        public void Write(string msg)
+        public void setGame(int game)
         {
-            //Connect.SendObject(msg);
+            NbGameInto = game;
         }
 
-        public void switchReadyState()
+        public int Game()
         {
-            Ready = !Ready;
+            return NbGameInto;
+        }
+
+        public void Write(string msg)
+        {
+            Connect.SendObject("Message", msg);
+        }
+
+        public void TossHand()
+        {
+            hand.RemoveRange(0, hand.Count);
+        }
+
+        public void setReadyState(bool status)
+        {
+            Ready = status;
         }
 
         public bool IsEqual(Connection connection)

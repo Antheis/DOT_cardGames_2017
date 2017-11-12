@@ -6,3 +6,11 @@ C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ConsoleApp1\obj\Debug\Serv
 C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ConsoleApp1\obj\Debug\Server.exe
 C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ConsoleApp1\obj\Debug\Server.pdb
 C:\Users\Antheis\Desktop\DOT_cardsGame_2017\cardGames\ConsoleApp1\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\Server.exe.config
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\Server.exe
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\Server.pdb
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\bin\Debug\NetworkCommsDotNet.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Debug\Server.exe
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\ConsoleApp1\obj\Debug\Server.pdb
