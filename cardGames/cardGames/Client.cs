@@ -111,15 +111,9 @@ namespace cardGame_Client
                 int pile = 0;
 
                 ProtocolCl srv_cmd;
-<<<<<<< HEAD
                 NetworkComms.SendObject("ReceiveProtocol", IP, Port, new ProtocolCl(Cmd.Ready));
                 Console.WriteLine("Waiting for ready players to launch the game !");
                 srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("ReceiveProtocol", "SendProtocol", 30000);
-=======
-                NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Ready));
-                Console.WriteLine("Waiting for ready players to launch the game !");
-                srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 300000);
->>>>>>> c61556cd7438fb52a4b41f61e5bdcdf13818fc86
                 if (srv_cmd.Command != Cmd.Ready)
                 {
                     Console.WriteLine("Something wrong hapened, your game got destroyed.");
@@ -135,7 +129,6 @@ namespace cardGame_Client
                             printhelp(Status.Bataille);
                             break;
                         case "hand":
-<<<<<<< HEAD
                             NetworkComms.SendObject("ReceiveProtocol", IP, Port, new ProtocolCl(Cmd.Hand));
                             srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("ReceiveProtocol", "SendProtocol", 30000);
                             break;
@@ -144,16 +137,6 @@ namespace cardGame_Client
                             handnbr--;
                             pile += 2;
                             Print_turn_result(Status.Bataille, srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("ReceiveProtocol", "SendProtocol", 30000));
-=======
-                            NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Hand));
-                            print_hand(Status.Bataille, TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 10000));
-                            break;
-                        case "rdy":
-                            NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Turn));
-                            handnbr--;
-                            pile += 2;
-                            Print_turn_result(Status.Bataille, srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 10000));
->>>>>>> c61556cd7438fb52a4b41f61e5bdcdf13818fc86
                             if (srv_cmd.Command == Cmd.Win)
                             {
                                 handnbr += pile;
