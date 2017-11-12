@@ -1,0 +1,6 @@
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ConsoleApp1\bin\Debug\Server.exe.config
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ConsoleApp1\bin\Debug\Server.exe
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ConsoleApp1\bin\Debug\Server.pdb
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\i\Server\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\i\Server\Debug\Server.exe
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\i\Server\Debug\Server.pdb

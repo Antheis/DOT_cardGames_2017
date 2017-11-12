@@ -27,6 +27,8 @@ namespace cardGame_Server
 
         private void AddToGame(Client cl)
         {
+            if (cl == null || cl.GetConnection() == null)
+                return;
             lock (games)
             {
                 for (int i = 0; i < games.Count; ++i)

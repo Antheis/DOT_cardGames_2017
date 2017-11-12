@@ -1,0 +1,10 @@
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ClientTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ClientTests\bin\Debug\ClientTests.dll.config
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ClientTests\bin\Debug\ClientTests.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\b\ClientTests\bin\Debug\ClientTests.pdb
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\i\ClientTests\Debug\ClientTests.csprojResolveAssemblyReference.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\i\ClientTests\Debug\ClientTests.csproj.CoreCompileInputs.cache
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\i\ClientTests\Debug\ClientTests.dll
+C:\Users\Antheis\Desktop\DOT_cardGames_2017-master\cardGames\.vs\cardGames\lut\0\i\ClientTests\Debug\ClientTests.pdb

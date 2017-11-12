@@ -8,7 +8,7 @@ using Protocol;
 
 namespace cardGame_Server
 {
-    class Client
+    public class Client
     {
         private List<Cards> hand = new List<Cards>();
         private Cards CardDrawn { get; set; }
@@ -98,6 +98,11 @@ namespace cardGame_Server
         public bool IsReady()
         {
             return Ready;
+        }
+
+        public Connection GetConnection()
+        {
+            return Connect;
         }
     }
 }

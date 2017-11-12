@@ -7,7 +7,7 @@ using Protocol;
 
 namespace cardGame_Server
 {
-    class Deck
+    public class Deck
     {
         private List<Cards> deck = new List<Cards>();
         private int availablecards;

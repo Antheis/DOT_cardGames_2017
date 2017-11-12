@@ -9,7 +9,7 @@ using Protocol;
 
 namespace cardGame_Server
 {
-    class Game
+    public class Game
     {
         private static int maxNbPlayers = 2;
         private Deck deck { get; set; }
@@ -43,7 +43,7 @@ namespace cardGame_Server
 
         public void BeginGame()
         {
-            Console.WriteLine("The game is begining");
+            Console.WriteLine("The game is beginning");
             if (Running)
                 return;
             Running = true;
@@ -53,6 +53,8 @@ namespace cardGame_Server
 
         public void AddClient(Client cl)
         {
+            if (cl == null)
+                return;
             Console.WriteLine("Adding player");
             players.Add(cl);
             cl.Write("Added to game n°" + Number + ". Waiting for a challenger.");
@@ -115,6 +117,8 @@ namespace cardGame_Server
 
         public void PrepareGame()
         {
+            if (!IsFull())
+                return;
             foreach (Client client in players)
             {
                 if (!client.IsReady())
@@ -131,6 +135,8 @@ namespace cardGame_Server
 
         public void DoTurn()
         {
+            if (!IsFull())
+                return;
             foreach (Client client in players)
             {
                 if (!client.IsReady())
@@ -144,14 +150,14 @@ namespace cardGame_Server
             }
         }
 
-        public void PrepareTurn()
+        private void PrepareTurn()
         {
             if (FillWell())
                 return;
             CheckWinTurnCondition();
         }
 
-        public bool FillWell()
+        private bool FillWell()
         {
             Console.WriteLine("Fill well");
             foreach (Client client in players)
@@ -168,7 +174,7 @@ namespace cardGame_Server
             return false;
         }
 
-        public void CheckWinTurnCondition()
+        private void CheckWinTurnCondition()
         {
             Console.WriteLine("Check win turn");
             Console.WriteLine(players[0].GetCardDrawn() + " Vs " + players[1].GetCardDrawn());
@@ -183,7 +189,7 @@ namespace cardGame_Server
             }
         }
 
-        public void DisplayVictory(Client winner, Client loser)
+        private void DisplayVictory(Client winner, Client loser)
         {
             winner.SendCmd(Cmd.Win, new List<Cards>(new Cards[] {winner.GetCardDrawn(), loser.GetCardDrawn()}));
             loser.SendCmd(Cmd.Lose, new List<Cards>(new Cards[] { loser.GetCardDrawn(), winner.GetCardDrawn() }));
