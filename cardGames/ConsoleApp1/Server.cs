@@ -12,6 +12,7 @@ using NetworkCommsDotNet.Connections;
 using NetworkCommsDotNet.Tools;
 using NetworkCommsDotNet.DPSBase.SevenZipLZMACompressor;
 using NetworkCommsDotNet.Connections.TCP;
+using Protocol;
 
 namespace cardGame_Server
 {
@@ -64,7 +65,7 @@ namespace cardGame_Server
         {
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
 
-            NetworkComms.AppendGlobalIncomingPacketHandler<byte[]>("ArrayByte", PrintIncomingMessage);
+            NetworkComms.AppendGlobalIncomingPacketHandler<Protocol.Protocol>("ArrayByte", PrintIncomingMessage);
             NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
             NetworkComms.AppendGlobalConnectionEstablishHandler(OnConnectionEstablished);
             NetworkComms.AppendGlobalConnectionCloseHandler(OnConnectionClosed);
@@ -75,7 +76,7 @@ namespace cardGame_Server
             foreach (IPEndPoint localEndPoint in Connection.ExistingLocalListenEndPoints(ConnectionType.TCP))
                 Console.WriteLine("{0}:{1}", localEndPoint.Address, localEndPoint.Port);
 
-            Console.WriteLine("\nWaiting for games to ba launched...");
+            Console.WriteLine("\nWaiting for games to be launched...");
             while (true)
             {
                 lock (games)
@@ -84,8 +85,10 @@ namespace cardGame_Server
                     {
                         if (game.IsFull() && !game.IsRunning())
                             game.BeginGame();
-                        if (game.IsRunning())
-                            game.PrepareTurn();
+                        if (game.IsRunning() && !game.IsPlaying())
+                            game.PrepareGame();
+                        if (game.IsPlaying())
+                            game.DoTurn();
                     }
                 }
             }
@@ -123,12 +126,16 @@ namespace cardGame_Server
             AddToGame(cl);
         }
 
-        private static void PrintIncomingMessage(PacketHeader header, Connection connection, byte[] message)
+        private static void PrintIncomingMessage(PacketHeader header, Connection connection, Protocol.Protocol message)
         {
-            Console.WriteLine("\nReceived byte array from " + connection.ToString());
-
-            for (int i = 0; i < message.Length; i++)
-                Console.WriteLine(i.ToString() + " - " + message[i].ToString());
+            Console.WriteLine("\nReceived protocol from " + connection.ToString());
+            Console.WriteLine("Command - " + message.Command);
+            switch (message.Command)
+            {
+                //Cmd handling
+                default:
+                    break;
+            }
         }
 
         private static void PrintIncomingMessage(PacketHeader header, Connection connection, string message)

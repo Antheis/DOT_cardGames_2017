@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NetworkCommsDotNet.Connections;
+using Protocol;
 
 namespace cardGame_Server
 {
     class Client
     {
         private List<Card> hand = new List<Card>();
+        private Card CardDrawn { get; set; }
         private Connection Connect { get; set; }
-        private string Name { get; set; }
         private int Id { get; set; }
         private bool Ready { get; set; }
         private int NbGameInto { get; set; }
@@ -19,14 +20,23 @@ namespace cardGame_Server
         public Client(Connection connection)
         {
             Connect = connection;
-            Name = Connect.ToString();
             Ready = false;
             NbGameInto = -1;
+            CardDrawn = Card.None;
         }
 
         public void AddCard(Card card)
         {
             hand.Add(card);
+        }
+
+        public Card RemoveCard()
+        {
+            if (hand.Count == 0)
+                return Card.None;
+            Card card = hand[0];
+            hand.RemoveAt(0);
+            return card;
         }
 
         public int NbCards()
@@ -42,6 +52,16 @@ namespace cardGame_Server
         public int Game()
         {
             return NbGameInto;
+        }
+
+        public void SetCardDrawn(Card card)
+        {
+            CardDrawn = card;
+        }
+
+        public Card GetCardDrawn()
+        {
+            return CardDrawn;
         }
 
         public void Write(string msg)

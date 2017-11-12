@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +17,16 @@ namespace cardGame_Server
 
         private List<Client> players = new List<Client>();
         private List<Card> deck = new List<Card>();
+        private List<Card> well = new List<Card>();
 
         private int Number { get; set; }
         private bool Running { get; set; }
+        private bool Playing { get; set; }
 
         public Game(int nb)
         {
             Running = false;
+            Playing = false;
             Number = nb;
             ShuffleDeck();
         }
@@ -37,17 +41,11 @@ namespace cardGame_Server
 
         private void DistribCards()
         {
-            foreach (Client client in players)
-            {
-                //client.Write("Distributing the cards");
-            }
-            Console.WriteLine("Distributing the cards...");
             Random rand = new Random();
             while (deck.Count != 0)
             {
                 int nbCard = rand.Next(deck.Count);
                 players[deck.Count % maxNbPlayers].AddCard(deck[nbCard]);
-                Console.WriteLine((int)deck[nbCard] + "goes to player " + deck.Count % maxNbPlayers);
                 deck.RemoveAt(nbCard);
             }
         }
@@ -57,11 +55,6 @@ namespace cardGame_Server
             if (Running)
                 return;
             Running = true;
-            Console.WriteLine("The Game has begun");
-            foreach (Client client in players)
-            {
-                //client.Write("The party will begin");
-            }
             DistribCards();
             Console.WriteLine("Waiting now for all players to be ready");
         }
@@ -70,7 +63,12 @@ namespace cardGame_Server
         {
             Console.WriteLine("Adding player");
             players.Add(cl);
-            //connection.SendObject("Added to game n°" + nb + ". Waiting for a challenger.");
+            cl.Write("Added to game n°" + Number + ". Waiting for a challenger.");
+            if (IsFull())
+                foreach (Client client in players)
+                {
+                   client.Write("The hobby is now full. The game will begin soon...");
+                }
         }
 
         public bool RemoveClient(Connection connection)
@@ -81,28 +79,32 @@ namespace cardGame_Server
                 {
                     players.Remove(cl);
                     if (Running)
-                        ResetGame();
+                        ResetGame(true);
                     return true;
                 }
             }
             return false;
         }
 
-        private void ResetGame()
+        private void ResetGame(bool quit)
         {
             foreach (Client cl in players)
             {
-                cl.Write("A player left the game. Please wait until another player comes...");
+                if (quit)
+                    cl.Write("A player left the game. Please wait until another player comes...");
                 cl.setReadyState(false);
                 cl.TossHand();
             }
             ShuffleDeck();
             Running = false;
+            Playing = false;
+            nbTurn = 0;
+            Console.WriteLine("Game reset");
         }
 
         public bool IsFull()
         {
-            return players.Count == maxNbPlayers;
+            return maxNbPlayers == 0 ? false : players.Count == maxNbPlayers;
         }
 
         public int nbPlayers()
@@ -115,12 +117,127 @@ namespace cardGame_Server
             return Running;
         }
 
-        public void PrepareTurn()
+        public bool IsPlaying()
+        {
+            return Playing;
+        }
+
+        public void PrepareGame()
         {
             foreach (Client client in players)
             {
                 if (!client.IsReady())
                     return;
+            }
+            Playing = true;
+            Console.WriteLine("Game prepared.");
+        }
+
+        public void DoTurn()
+        {
+            nbTurn++;
+            msgTurn();
+            foreach (Client client in players)
+            {
+                if (client.GetCardDrawn() == Card.None)
+                    return;
+            }
+            PrepareTurn();
+        }
+
+        public void PrepareTurn()
+        {
+            FillWell(false);
+            CheckWinTurnCondition();
+        }
+
+        public void FillWell(bool display)
+        {
+            foreach (Client client in players)
+            {
+                if (display)
+                    client.Write("Draw! So we take another card.");
+                Card card = client.RemoveCard();
+                if (card == Card.None)
+                {
+                    CheckWinGameCondition();
+                    return;
+                }
+                well.Add(card);
+            }
+        }
+
+        public void CheckWinTurnCondition()
+        {
+            Card higher = Card.None;
+            List<int> winners = new List<int>();
+            for (int i = well.Count - maxNbPlayers; i < well.Count - 1; ++i)
+            {
+                if (higher == Card.None)
+                {
+                    higher = well[i];
+                    winners.Add(i);
+                }
+                else if (well[i] >= higher)
+                {
+                    if (well[i] > higher)
+                    {
+                        higher = well[i];
+                        winners.RemoveRange(0, winners.Count);
+                    }
+                    winners.Add(i);
+                }
+            }
+            if (winners.Count > 1)
+                FillWell(true);
+            else
+            {
+                DisplayVictoryMsg(players[winners[0]]);
+                CheckWinGameCondition();
+            }
+        }
+
+        public void CheckWinGameCondition()
+        {
+            foreach (Client cl in players)
+            {
+                if (cl.NbCards() == 0)
+                    cl.Write("You lost.");
+                else
+                    cl.Write("You won!");
+                cl.Write("Restart? (y/N)");
+            }
+            ResetGame(false);
+        }
+
+        public void RestartGame()
+        {
+            ResetGame(false);
+        }
+
+        public void msgTurn()
+        {
+            foreach (Client cl in players)
+            {
+                cl.Write("Turn n°" + nbTurn + ": You have " + cl.NbCards() + ".\nPlease take your card:");
+            }
+        }
+
+        public void DisplayVictoryMsg(Client winner)
+        {
+            foreach (Client cl in players)
+            {
+                if (winner == cl)
+                {
+                    cl.Write("You win this turn! You take the card in the well.");
+                    while (well.Count != 0)
+                    {
+                        cl.AddCard(well[0]);
+                        well.RemoveAt(0);
+                    }
+                }
+                else
+                    cl.Write("You lose this turn.");
             }
         }
     }

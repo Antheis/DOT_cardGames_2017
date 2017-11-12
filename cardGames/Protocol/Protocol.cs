@@ -10,11 +10,11 @@ namespace Protocol
 {
     public enum Cmd
     {
-        READY=0xff00,
-
+        Ready=0xff00,
+        DrawCard,
     }
 
-    public enum Card : byte { Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
+    public enum Card { None=-1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
 
     [Serializable]
     public class Protocol
