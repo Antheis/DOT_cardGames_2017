@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Protocol;
 
-namespace cardGames_Server
+namespace cardGame_Server
 {
     class Deck
     {
-        public enum cards { Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
         private List<int> deck = new List<int>();
         private int availablecards;
         private Random rnd;
@@ -21,14 +21,16 @@ namespace cardGames_Server
             rnd = new Random();
         }
 
-        public cards GetNextCard()
+        public Cards GetNextCard()
         {
-            int dest = rnd.Next(1, 13);
+            if (deck.Count == 0)
+                return Cards.None;
+            int dest = rnd.Next(13);
 
             while (deck[dest] <= 0) { dest = rnd.Next(1, 13); }
             deck[dest]--;
             availablecards--;
-            return ((cards)dest);
+            return ((Cards)dest);
         }
     }
 }

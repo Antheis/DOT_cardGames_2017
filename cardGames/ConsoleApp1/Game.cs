@@ -11,13 +11,11 @@ namespace cardGame_Server
 {
     class Game
     {
-        private static int NbCard = 52;
         private static int maxNbPlayers = 2;
         private int nbTurn { get; set; }
-
+        private Deck deck { get; set; }
         private List<Client> players = new List<Client>();
-        private List<Card> deck = new List<Card>();
-        private List<Card> well = new List<Card>();
+        private List<Cards> well = new List<Cards>();
 
         private int Number { get; set; }
         private bool Running { get; set; }
@@ -28,25 +26,18 @@ namespace cardGame_Server
             Running = false;
             Playing = false;
             Number = nb;
-            ShuffleDeck();
-        }
-
-        public void ShuffleDeck()
-        {
-            for (int i = 0; i < NbCard; ++i)
-            {
-                deck.Add((Card)Math.Floor((decimal)i / 4));
-            }
+            deck = new Deck();
         }
 
         private void DistribCards()
         {
             Random rand = new Random();
-            while (deck.Count != 0)
+            int idx = 0;
+            Cards card;
+            while ((card = deck.GetNextCard()) != Cards.None)
             {
-                int nbCard = rand.Next(deck.Count);
-                players[deck.Count % maxNbPlayers].AddCard(deck[nbCard]);
-                deck.RemoveAt(nbCard);
+                players[idx % maxNbPlayers].AddCard(card);
+                ++idx;
             }
         }
 
@@ -95,7 +86,7 @@ namespace cardGame_Server
                 cl.setReadyState(false);
                 cl.TossHand();
             }
-            ShuffleDeck();
+            deck = new Deck();
             Running = false;
             Playing = false;
             nbTurn = 0;
@@ -139,7 +130,7 @@ namespace cardGame_Server
             msgTurn();
             foreach (Client client in players)
             {
-                if (client.GetCardDrawn() == Card.None)
+                if (client.GetCardDrawn() == Cards.None)
                     return;
             }
             PrepareTurn();
@@ -157,8 +148,8 @@ namespace cardGame_Server
             {
                 if (display)
                     client.Write("Draw! So we take another card.");
-                Card card = client.RemoveCard();
-                if (card == Card.None)
+                Cards card = client.RemoveCard();
+                if (card == Cards.None)
                 {
                     CheckWinGameCondition();
                     return;
@@ -169,11 +160,11 @@ namespace cardGame_Server
 
         public void CheckWinTurnCondition()
         {
-            Card higher = Card.None;
+            Cards higher = Cards.None;
             List<int> winners = new List<int>();
             for (int i = well.Count - maxNbPlayers; i < well.Count - 1; ++i)
             {
-                if (higher == Card.None)
+                if (higher == Cards.None)
                 {
                     higher = well[i];
                     winners.Add(i);

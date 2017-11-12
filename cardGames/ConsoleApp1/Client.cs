@@ -10,8 +10,8 @@ namespace cardGame_Server
 {
     class Client
     {
-        private List<Card> hand = new List<Card>();
-        private Card CardDrawn { get; set; }
+        private List<Cards> hand = new List<Cards>();
+        private Cards CardDrawn { get; set; }
         private Connection Connect { get; set; }
         private int Id { get; set; }
         private bool Ready { get; set; }
@@ -22,19 +22,19 @@ namespace cardGame_Server
             Connect = connection;
             Ready = false;
             NbGameInto = -1;
-            CardDrawn = Card.None;
+            CardDrawn = Cards.None;
         }
 
-        public void AddCard(Card card)
+        public void AddCard(Cards card)
         {
             hand.Add(card);
         }
 
-        public Card RemoveCard()
+        public Cards RemoveCard()
         {
             if (hand.Count == 0)
-                return Card.None;
-            Card card = hand[0];
+                return Cards.None;
+            Cards card = hand[0];
             hand.RemoveAt(0);
             return card;
         }
@@ -54,12 +54,12 @@ namespace cardGame_Server
             return NbGameInto;
         }
 
-        public void SetCardDrawn(Card card)
+        public void SetCardDrawn(Cards card)
         {
             CardDrawn = card;
         }
 
-        public Card GetCardDrawn()
+        public Cards GetCardDrawn()
         {
             return CardDrawn;
         }

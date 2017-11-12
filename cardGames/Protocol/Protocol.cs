@@ -18,7 +18,7 @@ namespace Protocol
         //DrawCard,
     }
 
-    public enum Card { None=-1, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
+    public enum Cards { None, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace };
 
     [ProtoContract]
     public class ProtocolCl
@@ -27,11 +27,11 @@ namespace Protocol
         public Cmd Command { get; private set; }
 
         [ProtoMember(2)]
-        public Card CardSend { get; private set; }
+        public Cards CardSend { get; private set; }
 
         protected ProtocolCl() { }
 
-        public ProtocolCl(Cmd cmd, Card card)
+        public ProtocolCl(Cmd cmd, Cards card)
         {
             Command = cmd;
             CardSend = card;
