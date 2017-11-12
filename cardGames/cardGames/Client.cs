@@ -68,7 +68,14 @@ namespace cardGame_Client
 
         void Print_turn_result(Status status, ProtocolCl scmd)
         {
+            if (status == Status.Bataille)
+            {
 
+            }
+            else
+            {
+
+            }
         }
 
         private void Bataille()
