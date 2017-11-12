@@ -23,7 +23,7 @@ namespace cardGame_Client
         private string IP;
         private int Port;
         private string ID;
-        private List<string> Bataille_available_actions = new List<string>(new string[] { "1 -'hand' to get your hand", "2 -'Rdy' to launch a new turn",  });
+        private List<string> Bataille_available_actions = new List<string>(new string[] { "1 -'hand' to get your hand", "2 -'Rdy' to launch a new turn", });
         private List<string> BJ_available_actions = new List<string>(new string[] { });
         private List<string> menu_available_actions = new List<string>(new string[] { "1 -'BJ' to play blackjack", "2 -'BT' to play bataille", "3 -'help' to get available commands", "4 -'quit' to close the client" });
         private enum Status { BlackJack, Bataille, Menu };
@@ -70,7 +70,15 @@ namespace cardGame_Client
         {
             if (status == Status.Bataille)
             {
+                switch (scmd.Command)
+                {
+                    case Cmd.Win:
+                        Console.WriteLine("You lost this turn. Your ");
+                        break;
+                    case Cmd.Lose:
 
+                        break;
+                }
             }
             else
             {
@@ -85,19 +93,11 @@ namespace cardGame_Client
                 int handnbr = 26;
                 int pile = 0;
 
-<<<<<<< HEAD
-                ProtocolCl dcmd;
-                NetworkComms.SendObject("Protocol", IP, Port, new ProtocolCl(Cmd.Ready));
-                Console.WriteLine("Waiting for ready players to launch the game !");
-                dcmd = TCPconn.SendReceiveObject<ProtocolCl>("Protocol", "Protocol", 30000);
-                if (dcmd.Command != Cmd.Ready)
-=======
                 ProtocolCl srv_cmd;
                 NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Ready, Cards.None));
                 Console.WriteLine("Waiting for ready players to launch the game !");
                 srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000);
                 if (srv_cmd.Command != Cmd.Ready)
->>>>>>> 6ef14b9936234d230dcedfb4be6a9a5a4031dc81
                 {
                     Console.WriteLine("Your game is not ready, it got destroyed...");
                     return;
@@ -112,13 +112,8 @@ namespace cardGame_Client
                             printhelp(Status.Bataille);
                             break;
                         case "hand":
-<<<<<<< HEAD
-                            NetworkComms.SendObject("Protocol", IP, Port, new ProtocolCl(Cmd.Hand));
-                            dcmd = TCPconn.SendReceiveObject<ProtocolCl>("Protocol", "Protocol", 30000);
-=======
                             NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Hand, Cards.None));
                             srv_cmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000);
->>>>>>> 6ef14b9936234d230dcedfb4be6a9a5a4031dc81
                             break;
                         case "rdy":
                             NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Turn, Cards.None));
