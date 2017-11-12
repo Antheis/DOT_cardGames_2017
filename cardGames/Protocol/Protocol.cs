@@ -11,10 +11,11 @@ namespace Protocol
 {
     public enum Cmd
     {
-        Ready=0xff00,
+        Ready = 0xff00,
         Games_list = 0xff01,
         BJ = 0xff02,
         Bataille = 0xff03,
+        Hand = 0xff04,
         //DrawCard,
     }
 
