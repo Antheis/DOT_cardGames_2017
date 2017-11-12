@@ -28,8 +28,6 @@ namespace cardGame_Client
             SetConsoleCtrlHandler(handler, true);
             Client client = new Client();
             client.start();
-            Console.WriteLine("Press a key to quit");
-            Console.ReadKey(true);
         }
 
         static bool ConsoleEventCallback(int evt)
