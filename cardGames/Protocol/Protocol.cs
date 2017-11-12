@@ -36,7 +36,7 @@ namespace Protocol
 
         protected ProtocolCl() { }
 
-        public ProtocolCl(Cmd cmd, List<Cards> cards)
+        public ProtocolCl(Cmd cmd, List<Cards> cards = null)
         {
             Command = cmd;
             CardSend = cards;

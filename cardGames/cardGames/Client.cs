@@ -73,9 +73,9 @@ namespace cardGame_Client
                 int handnbr = 26;
 
                 ProtocolCl dcmd;
-                NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Ready, Cards.None));
+                NetworkComms.SendObject("Protocol", IP, Port, new ProtocolCl(Cmd.Ready));
                 Console.WriteLine("Waiting for ready players to launch the game !");
-                dcmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000);
+                dcmd = TCPconn.SendReceiveObject<ProtocolCl>("Protocol", "Protocol", 30000);
                 if (dcmd.Command != Cmd.Ready)
                 {
                     Console.WriteLine("Your game is not ready, it got destroyed...");
@@ -91,8 +91,8 @@ namespace cardGame_Client
                             printhelp(Status.Bataille);
                             break;
                         case "hand":
-                            NetworkComms.SendObject("MyPacket", IP, Port, new ProtocolCl(Cmd.Hand, Cards.None));
-                            dcmd = TCPconn.SendReceiveObject<ProtocolCl>("RequestCustomObject", "CustomObjectReply", 30000);
+                            NetworkComms.SendObject("Protocol", IP, Port, new ProtocolCl(Cmd.Hand));
+                            dcmd = TCPconn.SendReceiveObject<ProtocolCl>("Protocol", "Protocol", 30000);
                             break;
                         case "rdy":
 
@@ -117,8 +117,8 @@ namespace cardGame_Client
         {
             TCPconn = TCPConnection.GetConnection(new ConnectionInfo(IP, Port));
             NetworkComms.DefaultSendReceiveOptions = new SendReceiveOptions(dataSerializer, dataProcessors, dataProcessorOptions);
-            NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
-            NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
+            //NetworkComms.AppendGlobalIncomingPacketHandler<string>("Message", PrintIncomingMessage);
+            //NetworkComms.AppendGlobalIncomingPacketHandler<ProtocolCl>("Protocol", PrintIncomingMessage);
             TCPconn.AppendShutdownHandler(disconnect);
 
             Console.WriteLine("Write 'quit' to quit | Write 'help' to get available commands");
